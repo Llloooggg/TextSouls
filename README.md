@@ -15,5 +15,5 @@ scripts/runserver.sh
 ### Запуск Telegram
 Из папки Telegram:
 ```
-python telegram/main.py
+python textsouls/main.py
 ```
