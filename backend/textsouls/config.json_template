@@ -4,6 +4,6 @@
         "SQLALCHEMY_TRACK_MODIFICATIONS": false
     },
     "db_settings": {
-        "SQLALCHEMY_DATABASE_URI": "postgresql://ownername:pass@localhost/dyxless"
+        "SQLALCHEMY_DATABASE_URI": "mysql+pymysql://ownername:pass@localhost/textsouls"
     }
 }
