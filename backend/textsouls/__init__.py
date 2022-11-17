@@ -2,6 +2,7 @@ import json
 
 from flask import Flask
 from flask_migrate import Migrate
+from flask_admin import Admin
 
 from textsouls.models import db
 
@@ -10,6 +11,7 @@ app = Flask(
 )
 
 migrate = Migrate(app, db)
+admin = Admin(name="TextSouls")
 
 with open("textsouls/config.json") as config_file:
     config_data = json.load(config_file)
@@ -20,8 +22,12 @@ app.config.update(main_settings)
 db_settings = config_data["db_settings"]
 app.config.update(db_settings)
 
+admin.init_app(app)
 db.init_app(app)
 
+from .admin import ts_admin as ts_admin_blueprint
+
+app.register_blueprint(ts_admin_blueprint)
 
 from .main import main as main_blueprint
 

@@ -14,20 +14,7 @@ class User(db.Model):
     first_name = db.Column(db.String(255), nullable=True)
     last_name = db.Column(db.String(255), nullable=True)
     username = db.Column(db.String(255), nullable=False)
-    registered_on = db.Column(db.DateTime, nullable=False)
+    registered_on = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.now()
+    )
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
-
-    def __init__(
-        self,
-        tg_id,
-        first_name,
-        last_name,
-        username,
-        is_admin=False,
-    ):
-        self.tg_id = tg_id
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
-        self.registered_on = datetime.datetime.now()
-        self.is_admin = is_admin
