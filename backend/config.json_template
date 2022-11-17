@@ -1,0 +1,9 @@
+{
+    "main_settings": {
+        "SECRET_KEY": "some-very-secret-key",
+        "SQLALCHEMY_TRACK_MODIFICATIONS": false
+    },
+    "db_settings": {
+        "SQLALCHEMY_DATABASE_URI": "postgresql://ownername:pass@localhost/dyxless"
+    }
+}
