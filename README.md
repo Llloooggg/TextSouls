@@ -1,13 +1,19 @@
 # TextSouls
 
-### Запуск бэкенда
-Из корня:
+### Бэкенд
+Все действия производить из папки backend!
+
+###### Создание/подготовка БД
 ```
-backend/scripts/runserver.sh
+scripts/updatedb.sh
+```
+###### Запуск
+```
+scripts/runserver.sh
 ```
 
 ### Запуск Telegram
-Из корня:
+Из папки Telegram:
 ```
 python telegram/main.py
 ```
