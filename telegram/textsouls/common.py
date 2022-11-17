@@ -9,7 +9,13 @@ class Backend:
     base_url = config_data["backend_settings"]["base_url"]
 
     def post(self, relative_url, data):
-        requests.post(f"{self.base_url}{relative_url}", json=data)
+        try:
+            response = requests.post(
+                f"{self.base_url}{relative_url}", json=data
+            )
+            return {"error": None, "response": response}
+        except Exception as err:
+            return {"error": err}
 
 
 backend = Backend()

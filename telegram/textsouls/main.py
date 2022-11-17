@@ -22,8 +22,15 @@ async def start(message):
         "last_name": tg_user.last_name,
         "username": tg_user.username,
     }
-    backend.post("/registration", ts_user)
-    await message.reply("Nice!")
+    result = backend.post("/registration", ts_user)
+    if not result["error"] and result["response"].ok:
+        data = json.loads(result["response"].text)
+        if data["created"]:
+            await message.reply("Добро пожаловать!")
+        else:
+            await message.reply("Добро пожаловать! Снова")
+    else:
+        await message.reply("Упс! Что-то пошло не так")
 
 
 if __name__ == "__main__":

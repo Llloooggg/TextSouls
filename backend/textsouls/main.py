@@ -21,14 +21,20 @@ def registration():
     last_name = data.get("last_name")
     username = data.get("username")
 
-    new_user = User(
-        tg_id=tg_id,
-        first_name=first_name,
-        last_name=last_name,
-        username=username,
-    )
+    existed_user = User.query.filter_by(tg_id=tg_id).first()
 
-    db.session.add(new_user)
-    db.session.commit()
+    if not existed_user:
+        new_user = User(
+            tg_id=tg_id,
+            first_name=first_name,
+            last_name=last_name,
+            username=username,
+        )
 
-    return "Nice!", 200
+        db.session.add(new_user)
+        db.session.commit()
+
+        return {"created": True, "id": new_user.id}
+
+    else:
+        return {"created": False, "id": existed_user.id}
