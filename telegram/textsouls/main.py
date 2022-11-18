@@ -7,7 +7,7 @@ from common import backend
 with open("textsouls/config.json") as config_file:
     config_data = json.load(config_file)
 
-API_TOKEN = config_data["main_settings"]["bot_token"]
+API_TOKEN = config_data["MAIN_SETTINGS"]["BOT_TOKEN"]
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
@@ -17,18 +17,20 @@ dp = Dispatcher(bot)
 async def start(message):
     tg_user = message.from_user
     ts_user = {
-        "tg_id": tg_user.id,
+        "id": tg_user.id,
         "first_name": tg_user.first_name,
         "last_name": tg_user.last_name,
         "username": tg_user.username,
     }
-    result = backend.post("/registration", ts_user)
-    if not result["error"] and result["response"].ok:
-        data = json.loads(result["response"].text)
-        if data["created"]:
+    result = backend.post("/users", ts_user)
+    if not result["error"]:
+        response_code = result["response"].status_code
+        if response_code == 200:
             await message.reply("Добро пожаловать!")
-        else:
+        elif response_code == 400:
             await message.reply("Добро пожаловать! Снова")
+        else:
+            await message.reply("Что-то другое")
     else:
         await message.reply("Упс! Что-то пошло не так")
 

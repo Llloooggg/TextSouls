@@ -1,9 +1,9 @@
 {
-    "main_settings": {
+    "MAIN_SETTINGS": {
         "SECRET_KEY": "some-very-secret-key",
         "SQLALCHEMY_TRACK_MODIFICATIONS": false
     },
-    "db_settings": {
+    "DB_SETTINGS": {
         "SQLALCHEMY_DATABASE_URI": "mysql+pymysql://ownername:pass@localhost/textsouls"
     }
 }

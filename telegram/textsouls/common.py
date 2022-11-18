@@ -6,7 +6,7 @@ with open("textsouls/config.json") as config_file:
 
 
 class Backend:
-    base_url = config_data["backend_settings"]["base_url"]
+    base_url = config_data["BACKEND_SETTINGS"]["BASE_URL"]
 
     def post(self, relative_url, data):
         try:

@@ -16,10 +16,10 @@ admin = Admin(name="TextSouls")
 with open("textsouls/config.json") as config_file:
     config_data = json.load(config_file)
 
-main_settings = config_data["main_settings"]
+main_settings = config_data["MAIN_SETTINGS"]
 app.config.update(main_settings)
 
-db_settings = config_data["db_settings"]
+db_settings = config_data["DB_SETTINGS"]
 app.config.update(db_settings)
 
 admin.init_app(app)
