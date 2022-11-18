@@ -13,4 +13,4 @@ register_api(main, User, "users")
 
 register_api(main, CharacterRace, "character_races")
 register_api(main, CharacterClass, "character_classes")
-register_api(main, Character, "characters")
+register_api(main, Character, "characters", "owner")

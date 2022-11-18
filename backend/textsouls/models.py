@@ -59,10 +59,13 @@ class Character(db.Model, SerializerMixin):
 
     __tablename__ = "characters"
 
+    serialize_rules = ("-user", "-race", "-class")
+
     id = db.Column(db.Integer, primary_key=True)
     owner = db.Column(
         db.Integer,
         db.ForeignKey("users.id"),
+        unique=True,
         nullable=True,
     )
     name = db.Column(db.String(255), nullable=False, unique=True)
