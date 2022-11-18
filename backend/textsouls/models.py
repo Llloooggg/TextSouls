@@ -57,7 +57,7 @@ class Character(db.Model, SerializerMixin):
     owner = db.Column(
         db.Integer,
         db.ForeignKey("users.id"),
-        nullable=False,
+        nullable=True,
     )
     name = db.Column(db.String(255), nullable=False)
     character_race = db.Column(
