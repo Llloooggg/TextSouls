@@ -1,75 +1,16 @@
 from flask import Blueprint
-from flask import request
-from flask import jsonify
-from flask.views import MethodView
 
-from . import db
+from textsouls.common.views import register_api
 from textsouls.models import User
+
+from textsouls.models import CharacterRace
+from textsouls.models import CharacterClass
+from textsouls.models import Character
 
 main = Blueprint("main", __name__)
 
-
-class ItemAPI(MethodView):
-    init_every_request = False
-
-    def __init__(self, model):
-        self.model = model
-
-    def _get_item(self, id):
-        return self.model.query.get_or_404(id)
-
-    def get(self, id):
-        item = self._get_item(id)
-        return item.to_dict()
-
-    def patch(self, id):
-        item = self._get_item(id)
-        errors = self.validator.validate(item, request.json)
-
-        if errors:
-            return jsonify(errors), 400
-
-        item.update_from_json(request.json)
-        db.session.commit()
-        return item.to_dict()
-
-    def delete(self, id):
-        item = self._get_item(id)
-        db.session.delete(item)
-        db.session.commit()
-        return "", 200
-
-
-class ListAPI(MethodView):
-    init_every_request = False
-
-    def __init__(self, model):
-        self.model = model
-
-    def _get_item(self, id):
-        return self.model.query.filter_by(id=id).first()
-
-    def get(self):
-        items = self.model.query.all()
-        return jsonify([item.to_dict() for item in items])
-
-    def post(self):
-
-        item = self._get_item(request.json["id"])
-
-        if item:
-            return "Already exists!", 400
-
-        db.session.add(self.model(**request.json))
-        db.session.commit()
-        return "", 200
-
-
-def register_api(app, model, name):
-    item = ItemAPI.as_view(f"{name}-item", model)
-    group = ListAPI.as_view(f"{name}-list", model)
-    app.add_url_rule(f"/{name}/<int:id>", view_func=item)
-    app.add_url_rule(f"/{name}/", view_func=group)
-
-
 register_api(main, User, "users")
+
+register_api(main, CharacterRace, "charachter-races")
+register_api(main, CharacterClass, "charachter-classes")
+register_api(main, Character, "character")
