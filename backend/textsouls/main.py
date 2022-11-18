@@ -11,6 +11,6 @@ main = Blueprint("main", __name__)
 
 register_api(main, User, "users")
 
-register_api(main, CharacterRace, "charachter-races")
-register_api(main, CharacterClass, "charachter-classes")
-register_api(main, Character, "character")
+register_api(main, CharacterRace, "character_races")
+register_api(main, CharacterClass, "character_classes")
+register_api(main, Character, "characters")

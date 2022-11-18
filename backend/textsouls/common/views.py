@@ -18,17 +18,6 @@ class ItemAPI(MethodView):
         item = self._get_item(id)
         return item.to_dict()
 
-    def patch(self, id):
-        item = self._get_item(id)
-        errors = self.validator.validate(item, request.json)
-
-        if errors:
-            return jsonify(errors), 400
-
-        item.update_from_json(request.json)
-        db.session.commit()
-        return item.to_dict()
-
     def delete(self, id):
         item = self._get_item(id)
         db.session.delete(item)
@@ -51,12 +40,15 @@ class ListAPI(MethodView):
 
     def post(self):
 
-        item = self._get_item(request.json["id"])
+        data = request.json
 
-        if item:
-            return "Already exists!", 400
+        if data.get("id"):
+            item = self._get_item(data["id"])
 
-        db.session.add(self.model(**request.json))
+            if item:
+                return "Already exists!", 400
+
+        db.session.add(self.model(**data))
         db.session.commit()
         return "", 200
 

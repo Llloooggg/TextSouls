@@ -8,6 +8,13 @@ with open("textsouls/config.json") as config_file:
 class Backend:
     base_url = config_data["BACKEND_SETTINGS"]["BASE_URL"]
 
+    def get(self, relative_url):
+        try:
+            response = requests.get(f"{self.base_url}{relative_url}")
+            return {"error": None, "response": response}
+        except Exception as err:
+            return {"error": err}
+
     def post(self, relative_url, data):
         try:
             response = requests.post(

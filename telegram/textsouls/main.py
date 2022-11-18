@@ -1,39 +1,27 @@
 import json
 
-from aiogram import Bot, Dispatcher, executor
+import asyncio
 
-from common import backend
+from aiogram import Bot, Dispatcher
+from aiogram.fsm.storage.memory import MemoryStorage
+
+from handlers import control
+from handlers import character_creation
 
 with open("textsouls/config.json") as config_file:
     config_data = json.load(config_file)
 
-API_TOKEN = config_data["MAIN_SETTINGS"]["BOT_TOKEN"]
 
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
+async def main():
+    bot = Bot(token=config_data["MAIN_SETTINGS"]["BOT_TOKEN"])
+    dp = Dispatcher(storage=MemoryStorage())
 
+    dp.include_router(control.router)
+    dp.include_router(character_creation.router)
 
-@dp.message_handler(commands=["start"])
-async def start(message):
-    tg_user = message.from_user
-    ts_user = {
-        "id": tg_user.id,
-        "first_name": tg_user.first_name,
-        "last_name": tg_user.last_name,
-        "username": tg_user.username,
-    }
-    result = backend.post("/users", ts_user)
-    if not result["error"]:
-        response_code = result["response"].status_code
-        if response_code == 200:
-            await message.reply("Добро пожаловать!")
-        elif response_code == 400:
-            await message.reply("Добро пожаловать! Снова")
-        else:
-            await message.reply("Что-то другое")
-    else:
-        await message.reply("Упс! Что-то пошло не так")
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True)
+    asyncio.run(main())
