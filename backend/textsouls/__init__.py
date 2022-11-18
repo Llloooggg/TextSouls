@@ -22,8 +22,8 @@ app.config.update(main_settings)
 db_settings = config_data["db_settings"]
 app.config.update(db_settings)
 
-db.init_app(app)
 admin.init_app(app)
+db.init_app(app)
 
 from .admin import ts_admin as ts_admin_blueprint
 
