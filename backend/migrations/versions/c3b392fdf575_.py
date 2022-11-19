@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 370968e335df
+Revision ID: c3b392fdf575
 Revises: 
-Create Date: 2022-11-19 06:44:47.040525
+Create Date: 2022-11-20 00:31:12.952336
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '370968e335df'
+revision = 'c3b392fdf575'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,23 +21,35 @@ def upgrade():
     op.create_table('character_classes',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=255), nullable=True),
+    sa.Column('endurance_koef', sa.Float(), nullable=False),
+    sa.Column('strength_koef', sa.Float(), nullable=False),
+    sa.Column('agility_koef', sa.Float(), nullable=False),
+    sa.Column('defence_koef', sa.Float(), nullable=False),
+    sa.Column('wisdom_koef', sa.Float(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
     op.create_table('character_races',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=255), nullable=True),
+    sa.Column('endurance_koef', sa.Float(), nullable=False),
+    sa.Column('strength_koef', sa.Float(), nullable=False),
+    sa.Column('agility_koef', sa.Float(), nullable=False),
+    sa.Column('defence_koef', sa.Float(), nullable=False),
+    sa.Column('wisdom_koef', sa.Float(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('name')
     )
     op.create_table('users',
     sa.Column('id', sa.BigInteger(), autoincrement=False, nullable=False),
+    sa.Column('chat_id', sa.BigInteger(), nullable=False),
     sa.Column('first_name', sa.String(length=255), nullable=True),
     sa.Column('last_name', sa.String(length=255), nullable=True),
     sa.Column('username', sa.String(length=255), nullable=False),
     sa.Column('registered_on', sa.DateTime(), nullable=False),
     sa.Column('is_admin', sa.Boolean(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('chat_id')
     )
     op.create_table('characters',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -46,6 +58,11 @@ def upgrade():
     sa.Column('character_race', sa.Integer(), nullable=False),
     sa.Column('character_class', sa.Integer(), nullable=False),
     sa.Column('created_on', sa.DateTime(), nullable=False),
+    sa.Column('endurance_base', sa.Integer(), nullable=False),
+    sa.Column('strength_base', sa.Integer(), nullable=False),
+    sa.Column('agility_base', sa.Integer(), nullable=False),
+    sa.Column('defence_base', sa.Integer(), nullable=False),
+    sa.Column('wisdom_base', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['character_class'], ['character_classes.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['character_race'], ['character_races.id'], ondelete='CASCADE'),
     sa.ForeignKeyConstraint(['owner'], ['users.id'], ondelete='CASCADE'),

@@ -16,6 +16,7 @@ async def start(message, state):
     tg_user = message.from_user
     ts_user = {
         "id": tg_user.id,
+        "chat_id": message.chat.id,
         "first_name": tg_user.first_name,
         "last_name": tg_user.last_name,
         "username": tg_user.username,

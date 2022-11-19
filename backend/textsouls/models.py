@@ -14,6 +14,7 @@ class User(db.Model, SerializerMixin):
     serialize_rules = ("-character",)
 
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=False)
+    chat_id = db.Column(db.BigInteger, nullable=False, unique=True)
     first_name = db.Column(db.String(255), nullable=True)
     last_name = db.Column(db.String(255), nullable=True)
     username = db.Column(db.String(255), nullable=False)
