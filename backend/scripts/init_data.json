@@ -1,0 +1,15 @@
+[
+    {
+        "table_name": "character_classes",
+        "records": [
+            {
+                "id": 1,
+                "name": "Тест1"
+            },
+            {
+                "id": 2,
+                "name": "Тест2"
+            }
+        ]
+    }
+]
