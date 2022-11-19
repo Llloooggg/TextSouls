@@ -34,5 +34,3 @@ async def start(message, state):
             await message.reply("Что-то случилось")
     else:
         await message.reply("Упс! Что-то пошло не так")
-
-    await state.set_state(CharachterCreation.choosing_class)
