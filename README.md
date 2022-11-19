@@ -9,7 +9,7 @@
 flask2postman textsouls.app --name "TextSouls" --folders > text_souls_postman.json
 ```
 
-###### Создание/подготовка БД
+###### Создание/обновление БД
 ```
 scripts/updatedb.sh
 ```
@@ -26,7 +26,7 @@ scripts/runserver.sh
 
 
 ### Запуск Telegram
-Из папки Telegram:
+Из папки telegram:
 ```
 python textsouls/main.py
 ```
