@@ -28,5 +28,5 @@ scripts/runserver.sh
 ### Запуск Telegram
 Из папки telegram:
 ```
-python textsouls/main.py
+uvicorn textsouls.main:app --reload
 ```
