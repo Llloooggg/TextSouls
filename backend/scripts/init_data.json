@@ -1,14 +1,65 @@
 [
     {
+        "table_name": "character_races",
+        "records": [
+            {
+                "id": 1,
+                "name": "Человек",
+                "endurance_koef": 1,
+                "strength_koef": 1,
+                "agility_koef": 1,
+                "defence_koef": 1,
+                "wisdom_koef": 1
+            },
+            {
+                "id": 2,
+                "name": "Орк",
+                "endurance_koef": 1.5,
+                "strength_koef": 1,
+                "agility_koef": 0.5,
+                "defence_koef": 1.5,
+                "wisdom_koef": 0.5
+            },
+            {
+                "id": 3,
+                "name": "Эльф",
+                "endurance_koef": 0.5,
+                "strength_koef": 1.5,
+                "agility_koef": 1.5,
+                "defence_koef": 0.5,
+                "wisdom_koef": 1
+            }
+        ]
+    },
+    {
         "table_name": "character_classes",
         "records": [
             {
                 "id": 1,
-                "name": "Тест1"
+                "name": "Воин",
+                "endurance_koef": 1.5,
+                "strength_koef": 1,
+                "agility_koef": 1,
+                "defence_koef": 1.5,
+                "wisdom_koef": 0.5
             },
             {
                 "id": 2,
-                "name": "Тест2"
+                "name": "Вор",
+                "endurance_koef": 0.5,
+                "strength_koef": 1.2,
+                "agility_koef": 1.5,
+                "defence_koef": 0.5,
+                "wisdom_koef": 0.1
+            },
+            {
+                "id": 3,
+                "name": "Маг",
+                "endurance_koef": 1,
+                "strength_koef": 0.5,
+                "agility_koef": 0.5,
+                "defence_koef": 1,
+                "wisdom_koef": 1.5
             }
         ]
     }
