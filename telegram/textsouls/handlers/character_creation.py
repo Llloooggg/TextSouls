@@ -2,8 +2,8 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.fsm.state import StatesGroup, State
 
-from common import backend
-from keyboards.common import row_kb
+from textsouls.common import backend
+from textsouls.keyboards.common import row_kb
 
 
 router = Router()
