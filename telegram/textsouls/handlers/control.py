@@ -1,10 +1,10 @@
 from aiogram import Router
 from aiogram.filters import Command
 
-from common import backend
+from textsouls.common import backend
 
-from handlers.character_creation import CharachterCreation
-from handlers.character_creation import character_creation
+from textsouls.handlers.character_creation import CharachterCreation
+from textsouls.handlers.character_creation import character_creation
 
 
 router = Router()
