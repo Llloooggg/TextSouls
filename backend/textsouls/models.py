@@ -11,9 +11,9 @@ class User(db.Model, SerializerMixin):
 
     __tablename__ = "users"
 
-    serialize_rules = ("-characters",)
+    serialize_rules = ("-character",)
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=False)
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=False)
     first_name = db.Column(db.String(255), nullable=True)
     last_name = db.Column(db.String(255), nullable=True)
     username = db.Column(db.String(255), nullable=False)
@@ -63,20 +63,18 @@ class Character(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     owner = db.Column(
-        db.Integer,
-        db.ForeignKey("users.id"),
-        unique=True,
-        nullable=True,
+        db.BigInteger,
+        db.ForeignKey("users.id", ondelete="CASCADE"),
     )
     name = db.Column(db.String(255), nullable=False, unique=True)
     character_race = db.Column(
         db.Integer,
-        db.ForeignKey("character_races.id"),
+        db.ForeignKey("character_races.id", ondelete="CASCADE"),
         nullable=False,
     )
     character_class = db.Column(
         db.Integer,
-        db.ForeignKey("character_classes.id"),
+        db.ForeignKey("character_classes.id", ondelete="CASCADE"),
         nullable=False,
     )
     created_on = db.Column(

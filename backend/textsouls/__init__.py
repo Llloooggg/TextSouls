@@ -10,7 +10,7 @@ app = Flask(
     "__name__",
 )
 
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, compare_type=True)
 admin = Admin(name="TextSouls")
 
 with open("textsouls/config.json") as config_file:
