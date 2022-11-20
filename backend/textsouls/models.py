@@ -1,6 +1,9 @@
 import datetime
 
+from random import randint
+
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import backref
 from sqlalchemy_serializer import SerializerMixin
 
 
@@ -196,5 +199,53 @@ class Duel(db.Model, SerializerMixin):
         db.DateTime, nullable=False, default=datetime.datetime.now()
     )
     participants = db.relationship(
-        "DuelParticipants", backref="duel", lazy="dynamic"
+        "DuelParticipants",
+        backref=backref("duel", order_by="DuelParticipants.turn_order.asc()"),
+        lazy="dynamic",
     )
+
+    def attack(attacked_character, defensive_character):
+        defensive_character_endurance = (
+            attacked_character.attack_power
+            - defensive_character.endurance_base
+        )
+
+        return defensive_character_endurance
+
+    def defence(defensive_character):
+        procced = False
+        if randint(1 * defensive_character.defence_chance, 50) == 50:
+            procced is True
+
+        return procced
+
+    def dodge(defensive_character):
+        procced = False
+        if randint(1 * defensive_character.dodge_chance, 50) == 50:
+            procced is True
+
+        return procced
+
+    def duel_one_to_one(self):
+
+        character_first = self.participants[0]
+        character_second = self.participants[1]
+
+        while (
+            character_first.endurance_base > 0
+            and character_second.endurance_base > 0
+        ):
+            if not self.defence(character_second) or not self.dodge(
+                character_second
+            ):
+                self.attack(character_first, character_second)
+            if not self.defence(character_first) or not self.dodge(
+                character_second
+            ):
+                self.attack(character_second, character_first)
+        if character_first.endurance_base > 0:
+            return character_first.name
+        elif character_second.character_second > 0:
+            return character_second.name
+        else:
+            return "Ничья"
