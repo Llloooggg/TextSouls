@@ -117,6 +117,11 @@ class Character(db.Model, SerializerMixin):
         nullable=False,
         default=1,
     )
+    duels_participation = db.relationship(
+        "DuelParticipant",
+        backref=("charachter"),
+        lazy="dynamic",
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -143,8 +148,8 @@ class Character(db.Model, SerializerMixin):
 
     @property
     def battle_stats(self):
-        char_race = CharacterRace.query.get(self.character_race)
-        char_class = CharacterClass.query.get(self.character_class)
+        char_race = CharacterRace.query.get(self.character_race_id)
+        char_class = CharacterClass.query.get(self.character_class_id)
 
         attack_power = (
             self.strength_base
@@ -171,7 +176,7 @@ class Character(db.Model, SerializerMixin):
         }
 
 
-class DuelParticipants(db.Model, SerializerMixin):
+class DuelParticipant(db.Model, SerializerMixin):
 
     __tablename__ = "duels_participants"
 
@@ -187,7 +192,7 @@ class DuelParticipants(db.Model, SerializerMixin):
     )
 
     def __str__(self):
-        return self.duel_id, self.participant_id
+        return f"{self.duel_id}: {self.participant_id}"
 
 
 class Duel(db.Model, SerializerMixin):
@@ -199,37 +204,52 @@ class Duel(db.Model, SerializerMixin):
         db.DateTime, nullable=False, default=datetime.datetime.now()
     )
     participants = db.relationship(
-        "DuelParticipants",
-        backref=backref("duel", order_by="DuelParticipants.turn_order.asc()"),
+        "DuelParticipant",
+        backref=backref("duel", order_by="DuelParticipant.turn_order.asc()"),
         lazy="dynamic",
     )
 
-    def attack(attacked_character, defensive_character):
+    def attack(self, attacked_character, defensive_character):
         defensive_character_endurance = (
-            attacked_character.attack_power
-            - defensive_character.endurance_base
+            defensive_character.endurance_base
+            - attacked_character.battle_stats["attack_power"]
         )
 
         return defensive_character_endurance
 
-    def defence(defensive_character):
+    def defence(self, defensive_character):
         procced = False
-        if randint(1 * defensive_character.defence_chance, 50) == 50:
+        if (
+            randint(
+                int(10 * defensive_character.battle_stats["defence_chance"]),
+                50,
+            )
+            == 50
+        ):
             procced is True
 
         return procced
 
-    def dodge(defensive_character):
+    def dodge(self, defensive_character):
         procced = False
-        if randint(1 * defensive_character.dodge_chance, 50) == 50:
+        if (
+            randint(
+                int(10 * defensive_character.battle_stats["dodge_chance"]), 50
+            )
+            == 50
+        ):
             procced is True
 
         return procced
 
     def duel_one_to_one(self):
 
-        character_first = self.participants[0]
-        character_second = self.participants[1]
+        character_first = Character.query.get(
+            self.participants[0].participant_id
+        )
+        character_second = Character.query.get(
+            self.participants[1].participant_id
+        )
 
         while (
             character_first.endurance_base > 0
@@ -238,14 +258,18 @@ class Duel(db.Model, SerializerMixin):
             if not self.defence(character_second) or not self.dodge(
                 character_second
             ):
-                self.attack(character_first, character_second)
+                character_second.endurance_base = self.attack(
+                    character_first, character_second
+                )
             if not self.defence(character_first) or not self.dodge(
-                character_second
+                character_first
             ):
-                self.attack(character_second, character_first)
+                character_first.endurance_base = self.attack(
+                    character_second, character_first
+                )
         if character_first.endurance_base > 0:
             return character_first.name
-        elif character_second.character_second > 0:
+        elif character_second.endurance_base > 0:
             return character_second.name
         else:
             return "Ничья"
