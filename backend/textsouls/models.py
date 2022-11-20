@@ -148,3 +148,84 @@ class Character(db.Model, SerializerMixin):
             "defence_chance": defence_chance,
             "dodge_chance": dodge_chance,
         }
+
+
+class MobsStat(db.Model, SerializerMixin):
+
+    __tablename__ = "mobs_stat"
+
+    serialize_rules = ("-mobs_level", "-mobs")
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False, unique=True)
+    mobs = db.relationship("Mobs", backref="class", lazy="dynamic")
+    endurance_koef = db.Column(db.Float(), nullable=False, unique=False)
+    strength_koef = db.Column(db.Float(), nullable=False, unique=False)
+    agility_koef = db.Column(db.Float(), nullable=False, unique=False)
+    defence_koef = db.Column(db.Float(), nullable=False, unique=False)
+    wisdom_koef = db.Column(db.Float(), nullable=False, unique=False)
+
+    def __str__(self):
+        return self.name
+
+
+class MobsLevel(db.Model, SerializerMixin):
+
+    __tablename__ = "mobs_level"
+
+    serialize_rules = ("-mobs", "-mobs_stat")
+
+    id = db.Column(db.Integer, primary_key=True)
+    level = db.Column(db.Integer(), nullable=False, unique=True)
+    mobs = db.relationship("Mobs", backref="class", lazy="dynamic")
+    level_koef = db.Column(db.Float(), nullable=False, unique=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Mobs(db.Model, SerializerMixin):
+
+    __tablename__ = "mobsLevel"
+
+    serialize_rules = ("-mobs_stat", "-mobs_level")
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False, unique=True)
+
+    mob_stat = db.Column(
+        db.Integer,
+        db.ForeignKey("mobs_stat.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    mob_level = db.Column(
+        db.Integer,
+        db.ForeignKey("mobs_level.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+
+    endurance = db.Column(db.Float(), nullable=False, unique=False)
+    strength = db.Column(db.Float(), nullable=False, unique=False)
+    agility = db.Column(db.Float(), nullable=False, unique=False)
+    defence = db.Column(db.Float(), nullable=False, unique=False)
+    wisdom = db.Column(db.Float(), nullable=False, unique=False)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        mobs_level = MobsStat.query.get(self.mob_level)
+        mobs_stat = MobsLevel.query.get(self.mob_stat)
+
+        self.endurance_base = (
+            100 * mobs_level.level_koef * mobs_stat.endurance_koef
+        )
+        self.strength_base = (
+            100 * mobs_level.level_koef * mobs_stat.strength_koef
+        )
+        self.agility_base = (
+            100 * mobs_level.level_koef * mobs_stat.agility_koef
+        )
+        self.defence_base = (
+            100 * mobs_level.level_koef * mobs_stat.defence_koef
+        )
+        self.wisdom_base = 100 * mobs_level.level_koef * mobs_stat.wisdom_koef
