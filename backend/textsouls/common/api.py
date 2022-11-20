@@ -1,7 +1,15 @@
-from .. import db
-
 from flask import request
 from flask.views import MethodView
+
+from flask_admin.contrib.sqla import ModelView
+
+from textsouls import db
+
+
+class CommonAdminView(ModelView):
+    def __init__(self, model, *args, **kwargs):
+        self.column_list = [c.key for c in model.__table__.columns]
+        super(CommonAdminView, self).__init__(model, *args, **kwargs)
 
 
 class ItemAPI(MethodView):

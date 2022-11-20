@@ -1,14 +1,14 @@
 import json
 
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_admin import Admin
-
-from textsouls.models import db
 
 app = Flask(
     "__name__",
 )
+db = SQLAlchemy()
 
 migrate = Migrate(app, db, compare_type=True)
 admin = Admin(name="TextSouls")
@@ -25,10 +25,14 @@ app.config.update(db_settings)
 admin.init_app(app)
 db.init_app(app)
 
-from .admin import ts_admin as ts_admin_blueprint
+from textsouls.actions.api import bp
 
-app.register_blueprint(ts_admin_blueprint)
+app.register_blueprint(bp)
 
-from .main import main as main_blueprint
+from textsouls.characters.api import bp
 
-app.register_blueprint(main_blueprint)
+app.register_blueprint(bp)
+
+from textsouls.users.api import bp
+
+app.register_blueprint(bp)
