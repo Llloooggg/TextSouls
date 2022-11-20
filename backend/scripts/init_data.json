@@ -1,5 +1,19 @@
 [
     {
+        "table_name": "users",
+        "records": [
+            {
+                "id": 1,
+                "chat_id": 1,
+                "first_name": "Pasha",
+                "last_name": "Durov",
+                "username": "God",
+                "is_admin": false,
+                "registered_on": "1000-01-01 00:00:00"
+            }
+        ]
+    },
+    {
         "table_name": "character_races",
         "records": [
             {
