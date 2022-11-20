@@ -73,17 +73,17 @@ class Character(db.Model, SerializerMixin):
     serialize_rules = ("-user", "-race", "-class")
 
     id = db.Column(db.Integer, primary_key=True)
-    owner = db.Column(
+    owner_id = db.Column(
         db.BigInteger,
         db.ForeignKey("users.id", ondelete="CASCADE"),
     )
     name = db.Column(db.String(255), nullable=False, unique=True)
-    character_race = db.Column(
+    character_race_id = db.Column(
         db.Integer,
         db.ForeignKey("character_races.id", ondelete="CASCADE"),
         nullable=False,
     )
-    character_class = db.Column(
+    character_class_id = db.Column(
         db.Integer,
         db.ForeignKey("character_classes.id", ondelete="CASCADE"),
         nullable=False,
@@ -148,3 +148,35 @@ class Character(db.Model, SerializerMixin):
             "defence_chance": defence_chance,
             "dodge_chance": dodge_chance,
         }
+
+
+class DuelParticipants(db.Model, SerializerMixin):
+
+    __tablename__ = "duels_participants"
+
+    id = db.Column(db.Integer, primary_key=True)
+    participant_id = db.Column(
+        db.Integer,
+        db.ForeignKey("characters.id", ondelete="CASCADE"),
+    )
+    turn_order = db.Column(db.Integer, nullable=False)
+    duel_id = db.Column(
+        db.Integer,
+        db.ForeignKey("duels.id", ondelete="CASCADE"),
+    )
+
+
+class Duel(db.Model, SerializerMixin):
+
+    __tablename__ = "duels"
+
+    id = db.Column(db.Integer, primary_key=True)
+    created_on = db.Column(
+        db.DateTime, nullable=False, default=datetime.datetime.now()
+    )
+    participants = db.relationship(
+        "DuelParticipants", backref="duel", lazy="dynamic"
+    )
+
+    def __str__(self):
+        return self.name
