@@ -8,7 +8,11 @@ from textsouls.models import User
 
 from textsouls.models import CharacterRace
 from textsouls.models import CharacterClass
+from textsouls.models import CharacterState
 from textsouls.models import Character
+
+from textsouls.models import DuelParticipants
+from textsouls.models import Duel
 
 ts_admin = Blueprint("ts_admin", __name__)
 
@@ -30,4 +34,8 @@ admin.add_view(AdminView(User, db.session))
 
 admin.add_view(CommonView(CharacterRace, db.session))
 admin.add_view(CommonView(CharacterClass, db.session))
+admin.add_view(CommonView(CharacterState, db.session))
 admin.add_view(CommonView(Character, db.session))
+
+admin.add_view(CommonView(DuelParticipants, db.session))
+admin.add_view(CommonView(Duel, db.session))

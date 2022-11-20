@@ -66,6 +66,18 @@ class CharacterClass(db.Model, SerializerMixin):
         return self.name
 
 
+class CharacterState(db.Model, SerializerMixin):
+
+    __tablename__ = "character_states"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False, unique=True)
+    characters = db.relationship("Character", backref="state", lazy="dynamic")
+
+    def __str__(self):
+        return self.name
+
+
 class Character(db.Model, SerializerMixin):
 
     __tablename__ = "characters"
@@ -96,6 +108,12 @@ class Character(db.Model, SerializerMixin):
     agility_base = db.Column(db.Integer(), nullable=False, unique=False)
     defence_base = db.Column(db.Integer(), nullable=False, unique=False)
     wisdom_base = db.Column(db.Integer(), nullable=False, unique=False)
+    state_id = db.Column(
+        db.Integer,
+        db.ForeignKey("character_states.id", ondelete="CASCADE"),
+        nullable=False,
+        default=1,
+    )
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -165,6 +183,9 @@ class DuelParticipants(db.Model, SerializerMixin):
         db.ForeignKey("duels.id", ondelete="CASCADE"),
     )
 
+    def __str__(self):
+        return self.duel_id, self.participant_id
+
 
 class Duel(db.Model, SerializerMixin):
 
@@ -177,6 +198,3 @@ class Duel(db.Model, SerializerMixin):
     participants = db.relationship(
         "DuelParticipants", backref="duel", lazy="dynamic"
     )
-
-    def __str__(self):
-        return self.name

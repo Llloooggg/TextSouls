@@ -62,5 +62,18 @@
                 "wisdom_koef": 1.5
             }
         ]
+    },
+    {
+        "table_name": "character_states",
+        "records": [
+            {
+                "id": 1,
+                "name": "Default"
+            },
+            {
+                "id": 2,
+                "name": "Duel"
+            }
+        ]
     }
 ]
