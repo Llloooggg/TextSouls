@@ -1,17 +1,22 @@
 import json
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_admin import Admin
+
+
+from textsouls.common.database import db
+from textsouls.common.admin import admin
+
+from textsouls.actions.api import actions_bp
+from textsouls.characters.api import characters_bp
+from textsouls.users.api import users_bp
+
 
 app = Flask(
     "__name__",
 )
-db = SQLAlchemy()
 
 migrate = Migrate(app, db, compare_type=True)
-admin = Admin(name="TextSouls")
 
 with open("textsouls/config.json") as config_file:
     config_data = json.load(config_file)
@@ -22,17 +27,12 @@ app.config.update(main_settings)
 db_settings = config_data["DB_SETTINGS"]
 app.config.update(db_settings)
 
-admin.init_app(app)
+celery_settings = config_data["CELERY_SETTINGS"]
+app.config.update(celery_settings)
+
 db.init_app(app)
+admin.init_app(app)
 
-from textsouls.actions.api import bp
-
-app.register_blueprint(bp)
-
-from textsouls.characters.api import bp
-
-app.register_blueprint(bp)
-
-from textsouls.users.api import bp
-
-app.register_blueprint(bp)
+app.register_blueprint(actions_bp)
+app.register_blueprint(characters_bp)
+app.register_blueprint(users_bp)

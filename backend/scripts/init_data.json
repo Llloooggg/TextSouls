@@ -14,6 +14,19 @@
         ]
     },
     {
+        "table_name": "sendlists_destionations_statuses",
+        "records": [
+            {
+                "id": 1,
+                "name": "В ожидании"
+            },
+            {
+                "id": 1,
+                "name": "Отправлено"
+            }
+        ]
+    },
+    {
         "table_name": "character_races",
         "records": [
             {

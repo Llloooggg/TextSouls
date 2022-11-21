@@ -2,7 +2,7 @@ from flask import Blueprint
 
 from flask_admin.contrib.sqla import ModelView
 
-from textsouls import db
+from textsouls.common.database import db
 from textsouls import admin
 
 from textsouls.common.api import register_api
