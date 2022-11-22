@@ -304,3 +304,5 @@ fabric.properties
 config.json
 temp/
 text_souls_postman.json
+
+settings_var.py

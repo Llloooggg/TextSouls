@@ -1,0 +1,14 @@
+SECRET_KEY = (
+    "django-insecure-dfjslweujjfopsdojwe90u23kjewk;jlwe!29ekjdvxc"
+)
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "textsouls",
+        "USER": "textsouls",
+        "PASSWORD": "password",
+        "HOST": "localhost",
+        "PORT": "3306",
+    }
+}
